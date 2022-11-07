@@ -1,0 +1,12 @@
+env1: test
+kibana_host: "https://10.113.220.137:443"
+kibana_username: "kibana_system"
+kibana_password: "dtcloud2022"
+elasticsearch_host: ["10.113.220.138:443"]
+elastic_username: "elastic"
+elastic_password: "dtcloud2022"
+source: "/etc/ansible/proje/filebeat/filebeat_repo"
+source_config: "/etc/ansible/proje/filebeat/filebeat.yml"
+destination: "C:\\"
+destination_config: "C:\\filebeat_repo"
+

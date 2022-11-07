@@ -1,0 +1,12 @@
+---
+- name: Delete Filebeat from Remote Server
+  hosts: windows
+  become: yes
+  vars_files:
+     - /etc/ansible/proje/filebeat/variables
+
+  tasks:
+
+     - name: Run remote PowerShell Script to Setup Filebeat
+       win_command: powershell.exe -ExecutionPolicy ByPass -File C:/filebeat_repo/uninstall-service-filebeat.ps1   
+

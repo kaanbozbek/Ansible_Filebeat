@@ -1,0 +1,57 @@
+2022-04-26T14:01:28.436+0300	INFO	instance/beat.go:665	Home path: [C:\tools\filebeat-iislog-all-new] Config path: [C:\tools\filebeat-iislog-all-new] Data path: [C:\tools\filebeat-iislog-all-new\data] Logs path: [C:\tools\filebeat-iislog-all-new\logs]
+2022-04-26T14:01:28.438+0300	DEBUG	[beat]	instance/beat.go:723	Beat metadata path: C:\tools\filebeat-iislog-all-new\data\meta.json
+2022-04-26T14:01:28.438+0300	INFO	instance/beat.go:673	Beat ID: 3d35264c-9a58-4657-b8bb-bcc81d21833f
+2022-04-26T14:01:28.444+0300	DEBUG	[conditions]	conditions/conditions.go:98	New condition contains: map[]
+2022-04-26T14:01:28.444+0300	DEBUG	[conditions]	conditions/conditions.go:98	New condition !contains: map[]
+2022-04-26T14:01:28.445+0300	DEBUG	[docker]	docker/client.go:48	Docker client will negotiate the API version on the first request.
+2022-04-26T14:01:28.445+0300	DEBUG	[add_docker_metadata]	add_docker_metadata/add_docker_metadata.go:86	add_docker_metadata: docker environment not detected: protocol not available
+2022-04-26T14:01:28.445+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:128	add_cloud_metadata: starting to fetch metadata, timeout=3s
+2022-04-26T14:01:28.446+0300	DEBUG	[kubernetes]	add_kubernetes_metadata/kubernetes.go:138	Could not create kubernetes client using in_cluster config: unable to build kube config due to error: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable	{"libbeat.processor": "add_kubernetes_metadata"}
+2022-04-26T14:01:31.446+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:172	add_cloud_metadata: timed-out waiting for all responses
+2022-04-26T14:01:31.446+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:131	add_cloud_metadata: fetchMetadata ran for 3.0005712s
+2022-04-26T14:01:31.446+0300	INFO	[add_cloud_metadata]	add_cloud_metadata/add_cloud_metadata.go:101	add_cloud_metadata: hosting provider type not detected.
+2022-04-26T14:01:31.446+0300	DEBUG	[processors]	processors/processor.go:120	Generated new processors: add_host_metadata=[netinfo.enabled=[true], cache.ttl=[5m0s]], condition=!contains: map[], add_cloud_metadata={}, add_docker_metadata=[match_fields=[] match_pids=[process.pid, process.ppid]], add_kubernetes_metadata
+2022-04-26T14:01:31.446+0300	INFO	[beat]	instance/beat.go:1014	Beat info	{"system_info": {"beat": {"path": {"config": "C:\\tools\\filebeat-iislog-all-new", "data": "C:\\tools\\filebeat-iislog-all-new\\data", "home": "C:\\tools\\filebeat-iislog-all-new", "logs": "C:\\tools\\filebeat-iislog-all-new\\logs"}, "type": "filebeat", "uuid": "3d35264c-9a58-4657-b8bb-bcc81d21833f"}}}
+2022-04-26T14:01:31.447+0300	INFO	[beat]	instance/beat.go:1023	Build info	{"system_info": {"build": {"commit": "5ae799cb1c3c490c9a27b14cb463dc23696bc7d3", "libbeat": "7.15.1", "time": "2021-10-07T22:06:50.000Z", "version": "7.15.1"}}}
+2022-04-26T14:01:31.447+0300	INFO	[beat]	instance/beat.go:1026	Go runtime info	{"system_info": {"go": {"os":"windows","arch":"amd64","max_procs":2,"version":"go1.16.6"}}}
+2022-04-26T14:01:31.459+0300	INFO	[beat]	instance/beat.go:1030	Host info	{"system_info": {"host": {"architecture":"x86_64","boot_time":"2022-03-22T15:52:42.65+03:00","name":"VDFWEBT01","ip":["10.112.118.52/24","::1/128","127.0.0.1/8"],"kernel_version":"10.0.17763.2565 (WinBuild.160101.0800)","mac":["00:50:56:ae:1f:fa"],"os":{"type":"windows","family":"windows","platform":"windows","name":"Windows Server 2019 Standard","version":"10.0","major":10,"minor":0,"patch":0,"build":"17763.2565"},"timezone":"+03","timezone_offset_sec":10800,"id":"f1f58683-63c0-459a-9444-cff17adbcd5a"}}}
+2022-04-26T14:01:31.459+0300	INFO	[beat]	instance/beat.go:1059	Process info	{"system_info": {"process": {"cwd": "C:\\tools\\filebeat-iislog-all-new", "exe": "C:\\tools\\filebeat-iislog-all-new\\filebeat.exe", "name": "filebeat.exe", "pid": 8652, "ppid": 2084, "start_time": "2022-04-26T14:01:28.198+0300"}}}
+2022-04-26T14:01:31.459+0300	INFO	instance/beat.go:309	Setup Beat: filebeat; Version: 7.15.1
+2022-04-26T14:01:31.459+0300	DEBUG	[beat]	instance/beat.go:335	Initializing output plugins
+2022-04-26T14:01:31.459+0300	WARN	[cfgwarn]	tlscommon/config.go:100	DEPRECATED: Treating the CommonName field on X.509 certificates as a host name when no Subject Alternative Names are present is going to be removed. Please update your certificates if needed. Will be removed in version: 8.0.0
+2022-04-26T14:01:31.460+0300	INFO	[esclientleg]	eslegclient/connection.go:100	elasticsearch url: https://10.112.116.167:9200
+2022-04-26T14:01:31.460+0300	WARN	[tls]	tlscommon/tls_config.go:98	SSL/TLS verifications disabled.
+2022-04-26T14:01:31.460+0300	DEBUG	[publisher]	pipeline/consumer.go:148	start pipeline event consumer
+2022-04-26T14:01:31.460+0300	INFO	[publisher]	pipeline/module.go:113	Beat name: VDFWEBT01
+2022-04-26T14:01:31.462+0300	INFO	beater/filebeat.go:117	Enabled modules/filesets: iis (access, error)
+2022-04-26T14:01:31.463+0300	INFO	[esclientleg]	eslegclient/connection.go:100	elasticsearch url: https://10.112.116.167:9200
+2022-04-26T14:01:31.463+0300	WARN	[tls]	tlscommon/tls_config.go:98	SSL/TLS verifications disabled.
+2022-04-26T14:01:31.463+0300	DEBUG	[esclientleg]	eslegclient/connection.go:249	ES Ping(url=https://10.112.116.167:9200)
+2022-04-26T14:01:31.463+0300	WARN	[tls]	tlscommon/tls_config.go:98	SSL/TLS verifications disabled.
+2022-04-26T14:01:31.473+0300	DEBUG	[esclientleg]	transport/logging.go:41	Completed dialing successfully	{"network": "tcp", "address": "10.112.116.167:9200"}
+2022-04-26T14:01:31.475+0300	DEBUG	[esclientleg]	eslegclient/connection.go:272	Ping status code: 200
+2022-04-26T14:01:31.475+0300	INFO	[esclientleg]	eslegclient/connection.go:273	Attempting to connect to Elasticsearch version 7.15.1
+2022-04-26T14:01:31.475+0300	DEBUG	[cfgfile]	cfgfile/reload.go:246	Scan for config files
+2022-04-26T14:01:31.475+0300	DEBUG	[cfgfile]	cfgfile/cfgfile.go:193	Load config from file: C:\tools\filebeat-iislog-all-new\modules.d\iis.yml
+2022-04-26T14:01:31.476+0300	DEBUG	[cfgfile]	cfgfile/reload.go:255	Number of module configs found: 1
+2022-04-26T14:01:31.476+0300	DEBUG	[load]	cfgfile/list.go:63	Starting reload procedure, current runners: 0
+2022-04-26T14:01:31.476+0300	DEBUG	[load]	cfgfile/list.go:81	Start list: 1, Stop list: 0
+2022-04-26T14:01:31.478+0300	DEBUG	[load]	cfgfile/list.go:105	Starting runner: iis (access, error)
+2022-04-26T14:01:31.478+0300	DEBUG	[modules]	fileset/setup.go:71	Loading ingest pipelines for modules from modules.d
+2022-04-26T14:01:31.478+0300	INFO	[esclientleg]	eslegclient/connection.go:100	elasticsearch url: https://10.112.116.167:9200
+2022-04-26T14:01:31.478+0300	WARN	[tls]	tlscommon/tls_config.go:98	SSL/TLS verifications disabled.
+2022-04-26T14:01:31.478+0300	DEBUG	[esclientleg]	eslegclient/connection.go:249	ES Ping(url=https://10.112.116.167:9200)
+2022-04-26T14:01:31.478+0300	WARN	[tls]	tlscommon/tls_config.go:98	SSL/TLS verifications disabled.
+2022-04-26T14:01:31.485+0300	DEBUG	[esclientleg]	transport/logging.go:41	Completed dialing successfully	{"network": "tcp", "address": "10.112.116.167:9200"}
+2022-04-26T14:01:31.486+0300	DEBUG	[esclientleg]	eslegclient/connection.go:272	Ping status code: 200
+2022-04-26T14:01:31.486+0300	INFO	[esclientleg]	eslegclient/connection.go:273	Attempting to connect to Elasticsearch version 7.15.1
+2022-04-26T14:01:31.486+0300	DEBUG	[modules]	fileset/pipelines.go:67	Required processors: [{user_agent ingest-user-agent} {geoip ingest-geoip}]
+2022-04-26T14:01:31.486+0300	DEBUG	[esclientleg]	eslegclient/connection.go:328	GET https://10.112.116.167:9200/_nodes/ingest  <nil>
+2022-04-26T14:01:31.489+0300	ERROR	[modules]	fileset/setup.go:80	Error loading pipeline: error getting pipeline for fileset iis/access: Error YAML decoding the pipeline file: ingest/pipeline.yml: yaml: line 17: did not find expected key
+2022-04-26T14:01:31.489+0300	INFO	cfgfile/reload.go:262	Loading of config files completed.
+2022-04-26T14:01:31.489+0300	INFO	[load]	cfgfile/list.go:129	Stopping 1 runners ...
+2022-04-26T14:01:31.489+0300	DEBUG	[load]	cfgfile/list.go:140	Stopping runner: iis (access, error)
+2022-04-26T14:01:31.489+0300	DEBUG	[load]	cfgfile/list.go:142	Stopped runner: iis (access, error)
+2022-04-26T14:01:31.489+0300	DEBUG	[modules]	fileset/pipelines.go:67	Required processors: [{user_agent ingest-user-agent} {geoip ingest-geoip}]
+2022-04-26T14:01:31.489+0300	DEBUG	[esclientleg]	eslegclient/connection.go:328	GET https://10.112.116.167:9200/_nodes/ingest  <nil>
+2022-04-26T14:01:31.492+0300	ERROR	instance/beat.go:989	Exiting: error getting pipeline for fileset iis/access: Error YAML decoding the pipeline file: ingest/pipeline.yml: yaml: line 17: did not find expected key

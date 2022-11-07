@@ -1,0 +1,13 @@
+env1: test
+kibana_host: "https://10.115.209.53:5601"
+kibana_username: ''
+kibana_password: ''
+elasticsearch_host: ["10.115.209.53:9200"]
+elastic_username: "kibana_system"
+elastic_password: "pass"
+source: "/etc/ansible/proje/filebeat/filebeat_repo"
+destination: "C:\\"
+source_config: "/etc/ansible/proje/filebeat/filebeat.yml"
+destionation_config: "C:\\filebeat_repo\\filebeat.yml"
+
+

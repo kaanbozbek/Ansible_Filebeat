@@ -1,0 +1,13 @@
+2022-04-26T13:48:56.552+0300	INFO	instance/beat.go:665	Home path: [C:\tools\filebeat-iislog-all-new] Config path: [C:\tools\filebeat-iislog-all-new] Data path: [C:\tools\filebeat-iislog-all-new\data] Logs path: [C:\tools\filebeat-iislog-all-new\logs]
+2022-04-26T13:48:56.554+0300	DEBUG	[beat]	instance/beat.go:723	Beat metadata path: C:\tools\filebeat-iislog-all-new\data\meta.json
+2022-04-26T13:48:56.554+0300	INFO	instance/beat.go:673	Beat ID: 3d35264c-9a58-4657-b8bb-bcc81d21833f
+2022-04-26T13:48:56.561+0300	DEBUG	[conditions]	conditions/conditions.go:98	New condition contains: map[]
+2022-04-26T13:48:56.561+0300	DEBUG	[conditions]	conditions/conditions.go:98	New condition !contains: map[]
+2022-04-26T13:48:56.561+0300	DEBUG	[docker]	docker/client.go:48	Docker client will negotiate the API version on the first request.
+2022-04-26T13:48:56.561+0300	DEBUG	[add_docker_metadata]	add_docker_metadata/add_docker_metadata.go:86	add_docker_metadata: docker environment not detected: protocol not available
+2022-04-26T13:48:56.561+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:128	add_cloud_metadata: starting to fetch metadata, timeout=3s
+2022-04-26T13:48:56.562+0300	DEBUG	[kubernetes]	add_kubernetes_metadata/kubernetes.go:138	Could not create kubernetes client using in_cluster config: unable to build kube config due to error: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable	{"libbeat.processor": "add_kubernetes_metadata"}
+2022-04-26T13:48:59.562+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:172	add_cloud_metadata: timed-out waiting for all responses
+2022-04-26T13:48:59.562+0300	DEBUG	[add_cloud_metadata]	add_cloud_metadata/providers.go:131	add_cloud_metadata: fetchMetadata ran for 3.0009427s
+2022-04-26T13:48:59.562+0300	INFO	[add_cloud_metadata]	add_cloud_metadata/add_cloud_metadata.go:101	add_cloud_metadata: hosting provider type not detected.
+2022-04-26T13:48:59.562+0300	DEBUG	[processors]	processors/processor.go:120	Generated new processors: add_host_metadata=[netinfo.enabled=[true], cache.ttl=[5m0s]], condition=!contains: map[], add_cloud_metadata={}, add_docker_metadata=[match_fields=[] match_pids=[process.pid, process.ppid]], add_kubernetes_metadata

@@ -1,0 +1,77 @@
+---
+
+- name: Filebeat Config Change
+  hosts: localhost
+  become: yes
+  vars_files:
+     - /etc/ansible/proje/filebeat/variables
+
+  tasks:
+   
+     - name: Filebeat.yml copy
+       ansible.builtin.copy:
+         src: /etc/ansible/proje/filebeat/filebeat1.yml
+         dest: /etc/ansible/proje/filebeat/filebeat.yml
+
+     - lineinfile: 
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  env: {{ env1 }}'
+         regexp: '  env: env1'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  host: {{ kibana_host }}'
+         regexp: '  host: kibana_host'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  username: "{{ kibana_username }}"'
+         regexp: '  username: kibana_username'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  password: {{ kibana_password }}'
+         regexp: '  password: kibana_password'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  hosts: {{ elasticsearch_host }}'
+         regexp: '  hosts: elasticsearch_host'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  username: {{ elastic_username }}'
+         regexp: '  username: elastic_username'
+
+     - lineinfile:
+         path: /etc/ansible/proje/filebeat/filebeat.yml
+         line: '  password: {{ elastic_password }}'
+         regexp: '  password: elastic_password'
+
+     - name: Download Files from Azure DevOps Repo
+       ansible.builtin.git:
+         repo: https://dtalm.visualstudio.com/DUY%20Self%20Service/_git/Filebeat%20IIS%20LOG%20Scraper
+         dest: /etc/ansible/proje/filebeat/filebeat_repo/
+
+
+- name: Filebeat File Copy
+  hosts: windows
+  become: yes
+  vars_files:
+     - /etc/ansible/proje/filebeat/variables
+
+  tasks:
+
+     - name: Filebeat.yml copy
+       ansible.builtin.copy:
+         src: /etc/ansible/proje/filebeat/filebeat.yml
+         dest: /etc/ansible/proje/filebeat/filebeat_repo/filebeat.yml
+
+     - name: Copy file to server
+       ansible.windows.win_copy:
+         src: "{{ source }}"
+         dest: "{{ destination }}"
+
+     - name: Run remote PowerShell Script to Setup Filebeat
+       win_command: powershell.exe -ExecutionPolicy ByPass -File C:/filebeat_repo/install-filebeat-IIS-Log-Scraper.ps1   
+

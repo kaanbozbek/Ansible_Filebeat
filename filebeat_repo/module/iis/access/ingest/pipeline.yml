@@ -1,0 +1,158 @@
+description: Pipeline for parsing IIS access logs. Requires the geoip and user_agent
+  plugins.
+processors:
+- set:
+    field: event.ingested
+    value: '{{_ingest.timestamp}}'
+- rename:
+    field: message
+    target_field: event.original
+- grok:
+    field: event.original
+    patterns:
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{NOTSPACE:sitename}) (?:-|%{IPORHOST:site}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:time_taken:int}) (?:-|%{NUMBER:sentbytes:int}) (?:-|%{NUMBER:receivedbytes:int}) (?:-|%{IPORHOST:network.forwarded_ip})?'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{NOTSPACE:sitename}) (?:-|%{IPORHOST:site}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:time_taken:int}) (?:-|%{NUMBER:sentbytes:int}) (?:-|%{NUMBER:receivedbytes:int})'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{NOTSPACE:sitename}) (?:-|%{IPORHOST:site}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NOTSPACE:http.request.referrer}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:time_taken:int})( (?:-|%{IPORHOST:network.forwarded_ip}))?'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{NOTSPACE:sitename}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NOTSPACE:iis.access.cookie}) (?:-|%{NOTSPACE:http.request.referrer}) (?:-|%{NOTSPACE:destination.domain}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:sentbytes:int}) (?:-|%{NUMBER:receivedbytes:int}) (?:-|%{NUMBER:time_taken:int})( (?:-|%{IPORHOST:network.forwarded_ip}))?'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{NOTSPACE:sitename}) (?:-|%{NOTSPACE:iis.access.server_name}) (?:-|%{IPORHOST:site}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|HTTP/%{NUMBER:http.version}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NOTSPACE:iis.access.cookie}) (?:-|%{NOTSPACE:http.request.referrer}) (?:-|%{NOTSPACE:destination.domain}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:sentbytes:int}) (?:-|%{NUMBER:receivedbytes:int}) (?:-|%{NUMBER:time_taken:int}) ( (?:-|%{IPORHOST:network.forwarded_ip}))?'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} \[%{IPORHOST:site}\]\(http://%{IPORHOST:site}\) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) \[%{IPORHOST:client_host}\]\(http://%{IPORHOST:client_host}\) (?:-|%{NOTSPACE:useragent}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:time_taken:int})( (?:-|%{IPORHOST:network.forwarded_ip}))?'
+    - '%{TIMESTAMP_ISO8601:log_timestamp} (?:-|%{IPORHOST:site}) (?:-|%{WORD:http_method}) (?:-|%{NOTSPACE:page}) (?:-|%{NOTSPACE:query_string}) (?:-|%{NUMBER:port}) (?:-|%{NOTSPACE:username}) (?:-|%{IPORHOST:client_host}) (?:-|%{NOTSPACE:useragent}) (?:-|%{NUMBER:http_response}) (?:-|%{NUMBER:sub_response}) (?:-|%{NUMBER:sc_status}) (?:-|%{NUMBER:time_taken:int})( (?:-|%{IPORHOST:network.forwarded_ip}))?'
+    ignore_missing: true
+- uri_parts:
+    field: page
+    ignore_failure: true
+- set:
+    field: url.original
+    value: "{{page}}"
+    ignore_failure: true
+    if: ctx?._tmp?.page != null && ctx?.url?.original == null
+- urldecode:
+    field: query_string
+    target_field: url.query
+    ignore_missing: true
+    ignore_failure: true
+    if: ctx.url?.query == null
+- set:
+    field: url.domain
+    value: "{{destination.domain}}"
+    if: ctx.url?.domain == null && ctx.destination?.domain != null
+- remove:
+    field:
+      - _tmp
+    ignore_missing: true
+- rename:
+    field: '@timestamp'
+    target_field: event.created
+- date:
+    field: log_timestamp
+    target_field: '@timestamp'
+    formats:
+    - yyyy-MM-dd HH:mm:ss
+- script:
+    lang: painless
+    source: ctx.event.duration = Math.round(ctx.time_taken * params.scale)
+    params:
+      scale: 1000000
+    if: ctx.time_taken != null
+- urldecode:
+    field: useragent
+    ignore_missing: true
+- user_agent:
+    field: useragent
+    ignore_missing: true
+- grok:
+    field: site
+    ignore_failure: true
+    patterns:
+    - '%{NOZONEIP:destination.ip}'
+    pattern_definitions:
+      NOZONEIP: '[^%]*'
+- grok:
+    field: client_host
+    ignore_failure: true
+    patterns:
+    - '%{NOZONEIP:source.ip}'
+    pattern_definitions:
+      NOZONEIP: '[^%]*'
+- geoip:
+    field: source.ip
+    target_field: source.geo
+    ignore_missing: true
+- geoip:
+    database_file: GeoLite2-ASN.mmdb
+    field: source.ip
+    target_field: source.as
+    properties:
+    - asn
+    - organization_name
+    ignore_missing: true
+- rename:
+    field: source.as.asn
+    target_field: source.as.number
+    ignore_missing: true
+- rename:
+    field: source.as.organization_name
+    target_field: source.as.organization.name
+    ignore_missing: true
+- set:
+    field: event.kind
+    value: event
+- append:
+    field: event.category
+    value: web
+- append:
+    field: event.category
+    value: network
+    if: "ctx?.source?.ip != null && ctx?.destination?.ip != null"
+- append:
+    field: event.type
+    value: connection
+    if: "ctx?.source?.ip != null && ctx?.destination?.ip != null"
+- append:
+    field: related.ip
+    value: "{{source.ip}}"
+    if: "ctx?.source?.ip != null"
+- append:
+    field: related.ip
+    value: "{{destination.ip}}"
+    if: "ctx?.destination?.ip != null"
+- append:
+    field: related.user
+    value: "{{username}}"
+    if: "ctx?.username != null"
+- set:
+    field: event.outcome
+    value: success
+    if: "ctx?.http_response != null && ctx.http_response < 400"
+- set:
+    field: event.outcome
+    value: failure
+    if: "ctx.http_response != null && ctx.http_response >= 400"
+- script:
+    lang: painless
+    description: This script processor iterates over the whole document to remove fields with null values.
+    source: |
+      void handleMap(Map map) {
+        for (def x : map.values()) {
+          if (x instanceof Map) {
+              handleMap(x);
+          } else if (x instanceof List) {
+              handleList(x);
+          }
+        }
+        map.values().removeIf(v -> v == null);
+      }
+      void handleList(List list) {
+        for (def x : list) {
+            if (x instanceof Map) {
+                handleMap(x);
+            } else if (x instanceof List) {
+                handleList(x);
+            }
+        }
+      }
+      handleMap(ctx);
+on_failure:
+- set:
+    field: error.message
+    value: '{{ _ingest.on_failure_message }}'
